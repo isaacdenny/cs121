@@ -71,17 +71,32 @@ public class MyAvatar extends JPanel
 
 
 	private MiniFig DrawMinifig(Graphics g, int currentHeight, int currentWidth, int mid, int top, double scaleFactor) {
+		// @keyterm coordinates
+		// @keyterm anchor point
 		Point anchor = new Point(mid,top);
+		int crabHandWidth = 100;
+		int crabHandHeight = 100;
+		int hatWidth = 100;
+		int hatHeight = 100;
+		int hatRimWidth = 150;
+		int hatRimHeight = 20;
 		
 		MiniFig bob = new MiniFig(g, scaleFactor, anchor);
 
-		Color torsoColor = new Color(0, 255, 255, 255);
-		bob.setTorsoColor(torsoColor);
-
-		MiniFig robert = bob;
-		robert.setTorsoColor(Color.RED);
-
 		bob.draw();
+		
+		// draw accessory
+		g.setColor(Color.RED);
+		g.fillArc(bob.getLeftHandCenterPoint().x - crabHandWidth / 3, bob.getLeftHandCenterPoint().y - crabHandHeight / 3, crabHandWidth, crabHandHeight, 0, 300);
+		
+		// draw hat
+		// @keyterm RGB
+		Color newBlack = new Color(0, 0, 0);
+		g.setColor(newBlack);
+		g.fillRect(bob.getCapPoint().x - hatWidth / 2, bob.getCapPoint().y - hatHeight, hatWidth, hatHeight);
+		g.setColor(Color.black);
+		g.fillRect(bob.getCapPoint().x - hatRimWidth / 2, bob.getCapPoint().y - hatRimHeight, hatRimWidth, hatRimHeight);
+
 		return bob;
 	}
 
