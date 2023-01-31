@@ -1,0 +1,9 @@
+1. Instructions
+2. Read Starter Code
+3. Clean Out Comments
+4. Javadoc
+5. Draw / Plan project vehicle
+6. Plan Code implementation
+7. Code
+8. README.md
+9. Submit with Onyx CLI
