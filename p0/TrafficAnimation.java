@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Toolkit;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,18 +13,14 @@ import javax.swing.Timer;
 /**
  * CS 121 Project 0: Traffic Animation
  *
- * Animates a [put your description here]
+ * Animates a plane moving across the sky between some clouds.
  *
  * @author BSU CS 121 Instructors
- * @author [put your name here]
+ * @author Isaac Denny
  */
 @SuppressWarnings("serial")
 public class TrafficAnimation extends JPanel
 {
-	// This is where you declare constants and variables that need to keep their
-	// values between calls	to paintComponent(). Any other variables should be
-	// declared locally, in the method where they are used.
-
 	/**
 	 * A constant to regulate the frequency of Timer events.
 	 * Note: 100ms is 10 frames per second - you should not need
@@ -40,46 +37,66 @@ public class TrafficAnimation extends JPanel
 	/**
 	 * The number of pixels added to xOffset each time paintComponent() is called.
 	 */
-	private int stepSize = 10;
+	private int stepSize = 1;
 
-	private final Color BACKGROUND_COLOR = Color.black;
+	private final Color BACKGROUND_COLOR = new Color(137, 207, 240);
 
-	/* This method draws on the panel's Graphics context.
-	 * This is where the majority of your work will be.
-	 *
-	 * (non-Javadoc)
-	 * @see java.awt.Container#paint(java.awt.Graphics)
-	 */
 	public void paintComponent(Graphics g)
 	{
-		// Get the current width and height of the window.
-		int width = getWidth(); // panel width
-		int height = getHeight(); // panel height
+		int width = getWidth();
+		int height = getHeight();
+		final int UNITSIZE = Math.min(width, height) / 20;
+		
+		int cloudWidth = 4 * UNITSIZE;
+		int cloudHeight = 3 * UNITSIZE;
 
-		// Fill the graphics page with the background color.
+		// fill background
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(0, 0, width, height);
 
+		// draw clouds
+		Point cloudAnchor = new Point(GetCenterWidth() - 7 * UNITSIZE, GetCenterHeight() + 4 * UNITSIZE);
+		Point cloudAnchor2 = new Point(GetCenterWidth() + 0 * UNITSIZE, GetCenterHeight() - 2 * UNITSIZE);
+		Point cloudAnchor3 = new Point(GetCenterWidth() + 9 * UNITSIZE, GetCenterHeight() - 5 * UNITSIZE);
+		Point cloudAnchor4 = new Point(GetCenterWidth() - 10 * UNITSIZE, GetCenterHeight() - 8 * UNITSIZE);
+		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor);
+		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor2);
+		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor3);
+		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor4);
+
 		// Calculate the new xOffset position of the moving object.
-		xOffset  = (xOffset + stepSize) % width;
+		xOffset  = (xOffset + stepSize * UNITSIZE) % width;
 
-		// This draws a green square. Replace it with your own object.
-		int squareW = height/5;
-		int squareH = squareW; 
+		// This draws the plane
+		int squareW = UNITSIZE * 5;
+		int squareH = UNITSIZE * 2;
 		int squareX = xOffset;
-		int squareY = height/2 - squareW/2;
+		int squareY = GetCenterHeight() - squareW/2;
 
-		g.setColor(Color.green);
+		g.setColor(Color.gray);
 		g.fillRect(squareX, squareY, squareW, squareH);
-
-		// TODO: Use width, height, and xOffset to draw your scalable objects
-		// at their new positions on the screen
-
+		g.fillOval(squareX + squareW - squareH / 2, squareY, squareH, squareH);
 
 
 
 		// Put your code above this line. This makes the drawing smoother.
 		Toolkit.getDefaultToolkit().sync();
+	}
+
+
+	private void DrawCloud(Graphics g, int cloudWidth, int cloudHeight, Point cloudAnchor) {
+		g.setColor(Color.WHITE);
+		g.fillOval(cloudAnchor.x, cloudAnchor.y, cloudWidth, cloudHeight);
+		g.fillOval(cloudAnchor.x - cloudWidth / 3, cloudAnchor.y + cloudHeight / 2, cloudWidth, cloudHeight);
+		g.fillOval(cloudAnchor.x + cloudWidth / 3, cloudAnchor.y + cloudHeight / 2, cloudWidth, cloudHeight);
+	}
+
+	private int GetCenterWidth() {
+		return getWidth() / 2;
+	}
+
+	private int GetCenterHeight() {
+		return getHeight() / 2;
 	}
 
 
