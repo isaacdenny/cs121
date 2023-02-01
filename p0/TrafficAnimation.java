@@ -3,6 +3,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;
 import java.awt.Toolkit;
 import java.awt.Point;
 
@@ -21,6 +23,8 @@ import javax.swing.Timer;
 @SuppressWarnings("serial")
 public class TrafficAnimation extends JPanel
 {
+	Random random = new Random(4);
+	Boolean isFirstFrame = true;
 	/**
 	 * A constant to regulate the frequency of Timer events.
 	 * Note: 100ms is 10 frames per second - you should not need
@@ -43,15 +47,28 @@ public class TrafficAnimation extends JPanel
 
 	public void paintComponent(Graphics g)
 	{
+		final int UNITSIZE_MODIFIER = 20;
 		int width = getWidth();
 		int height = getHeight();
-		final int UNITSIZE = Math.min(width, height) / 20;
+		final int UNITSIZE = Math.min(width, height) / UNITSIZE_MODIFIER;
 		
 		int planetSize = 3 * UNITSIZE;
+		ArrayList<Integer> map = new ArrayList<Integer>();
 
 		// fill background
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(0, 0, width, height);
+
+		if (isFirstFrame) {
+			for (int i = 0; i < UNITSIZE_MODIFIER; i++) {
+				for (int j = 0; j < UNITSIZE_MODIFIER; j++) {
+					if (random.nextInt() % 100 > 50) {
+						g.setColor(Color.WHITE);
+						g.fillOval(i * UNITSIZE, j * UNITSIZE, UNITSIZE / 4, UNITSIZE / 4);
+					}
+				}
+			}
+		}
 
 		// draw planets
 		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59));
@@ -92,7 +109,7 @@ public class TrafficAnimation extends JPanel
 		g.fillArc(squareX - UNITSIZE * 2, squareY + squareH / 8, UNITSIZE * 4, UNITSIZE * 2, 0, -90);
 		
 
-
+		isFirstFrame = false;
 		// Put your code above this line. This makes the drawing smoother.
 		Toolkit.getDefaultToolkit().sync();
 	}
