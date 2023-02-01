@@ -13,7 +13,7 @@ import javax.swing.Timer;
 /**
  * CS 121 Project 0: Traffic Animation
  *
- * Animates a plane moving across the sky between some clouds.
+ * Animates a spaceship flying through space.
  *
  * @author BSU CS 121 Instructors
  * @author Isaac Denny
@@ -32,7 +32,7 @@ public class TrafficAnimation extends JPanel
 	 * The anchor coordinate for drawing / animating. All of your vehicle's
 	 * coordinates should be relative to this offset value.
 	 */
-	private int xOffset = -Math.min(getWidth(), getHeight()) / 20 * 3;
+	private int xOffset = 0;
 
 	/**
 	 * The number of pixels added to xOffset each time paintComponent() is called.
@@ -53,7 +53,7 @@ public class TrafficAnimation extends JPanel
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(0, 0, width, height);
 
-		// draw clouds
+		// draw planets
 		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59));
 		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, new Color(191, 141, 54));
 		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, new Color(91, 143, 70));
@@ -68,17 +68,28 @@ public class TrafficAnimation extends JPanel
 			xOffset += stepSize * UNITSIZE / 10;
 		}
 		
-		// This draws the plane
+		// This draws the spaceship
 		int squareW = UNITSIZE * 3;
 		int squareH = UNITSIZE * 2;
 		int squareX = xOffset;
-		int squareY = GetCenterHeight() - squareW/2;
+		int squareY = GetCenterHeight() - squareW / 2;
 		
-		g.setColor(Color.gray);
-		g.fillRect(squareX, squareY, squareW, squareH);
+		// nose
+		g.setColor(new Color(102, 66, 90));
 		g.fillOval(squareX + squareW - squareH / 2, squareY, squareH, squareH);
-		g.fillRect(squareX, squareY - squareH / 4, squareW - UNITSIZE / 2, squareH / 2);
+		// Windshield
+		g.setColor(new Color(60, 129, 130));
 		g.fillOval(squareX + (squareW - UNITSIZE / 2) - (squareH / 4), squareY - squareH / 4, squareH / 2, squareH / 2);
+		//body
+		g.setColor(Color.WHITE);
+		g.fillRect(squareX, squareY, squareW, squareH);
+		g.fillRect(squareX, squareY - squareH / 4, squareW - UNITSIZE / 2, squareH / 2);
+		// stripe
+		g.setColor(new Color(102, 66, 90));
+		g.fillRect(squareX, squareY - squareH / 4, squareW / 8, squareH + squareH / 4);
+		// Wing
+		g.setColor(new Color(230, 230, 230));
+		g.fillArc(squareX - UNITSIZE * 2, squareY + squareH / 8, UNITSIZE * 4, UNITSIZE * 2, 0, -90);
 		
 
 
