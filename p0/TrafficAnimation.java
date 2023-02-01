@@ -39,7 +39,7 @@ public class TrafficAnimation extends JPanel
 	 */
 	private int stepSize = 1;
 
-	private final Color BACKGROUND_COLOR = new Color(137, 207, 240);
+	private final Color BACKGROUND_COLOR = Color.black;
 
 	public void paintComponent(Graphics g)
 	{
@@ -47,28 +47,24 @@ public class TrafficAnimation extends JPanel
 		int height = getHeight();
 		final int UNITSIZE = Math.min(width, height) / 20;
 		
-		int cloudWidth = 4 * UNITSIZE;
-		int cloudHeight = 3 * UNITSIZE;
+		int planetSize = 3 * UNITSIZE;
 
 		// fill background
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(0, 0, width, height);
 
 		// draw clouds
-		Point cloudAnchor = new Point(GetCenterWidth() - 7 * UNITSIZE, GetCenterHeight() + 4 * UNITSIZE);
-		Point cloudAnchor2 = new Point(GetCenterWidth() + 0 * UNITSIZE, GetCenterHeight() - 2 * UNITSIZE);
-		Point cloudAnchor3 = new Point(GetCenterWidth() + 9 * UNITSIZE, GetCenterHeight() - 5 * UNITSIZE);
-		Point cloudAnchor4 = new Point(GetCenterWidth() - 10 * UNITSIZE, GetCenterHeight() - 8 * UNITSIZE);
-		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor);
-		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor2);
-		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor3);
-		DrawCloud(g, cloudWidth, cloudHeight, cloudAnchor4);
+		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, Color.BLUE);
+		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, Color.GREEN);
+		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, Color.ORANGE);
+		DrawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, Color.RED);
+		DrawPlanet(g, planetSize, -10, -8, UNITSIZE, Color.RED);
 
 		// Calculate the new xOffset position of the moving object.
 		xOffset  = (xOffset + stepSize * UNITSIZE) % width;
 
 		// This draws the plane
-		int squareW = UNITSIZE * 5;
+		int squareW = UNITSIZE * 3;
 		int squareH = UNITSIZE * 2;
 		int squareX = xOffset;
 		int squareY = GetCenterHeight() - squareW/2;
@@ -76,6 +72,8 @@ public class TrafficAnimation extends JPanel
 		g.setColor(Color.gray);
 		g.fillRect(squareX, squareY, squareW, squareH);
 		g.fillOval(squareX + squareW - squareH / 2, squareY, squareH, squareH);
+		g.fillRect(squareX, squareY - squareH / 4, squareW - UNITSIZE / 2, squareH / 2);
+		g.fillOval(squareX + (squareW - UNITSIZE / 2) - (squareH / 4), squareY - squareH / 4, squareH / 2, squareH / 2);
 
 
 
@@ -84,11 +82,10 @@ public class TrafficAnimation extends JPanel
 	}
 
 
-	private void DrawCloud(Graphics g, int cloudWidth, int cloudHeight, Point cloudAnchor) {
-		g.setColor(Color.WHITE);
-		g.fillOval(cloudAnchor.x, cloudAnchor.y, cloudWidth, cloudHeight);
-		g.fillOval(cloudAnchor.x - cloudWidth / 3, cloudAnchor.y + cloudHeight / 2, cloudWidth, cloudHeight);
-		g.fillOval(cloudAnchor.x + cloudWidth / 3, cloudAnchor.y + cloudHeight / 2, cloudWidth, cloudHeight);
+	private void DrawPlanet(Graphics g, int planetSize, int xOffset, int yOffset, int unitSize, Color color) {
+		Point bodyAnchor = new Point(GetCenterWidth() + xOffset * unitSize, GetCenterHeight() + yOffset * unitSize);
+		g.setColor(color);
+		g.fillOval(bodyAnchor.x, bodyAnchor.y, planetSize, planetSize);
 	}
 
 	private int GetCenterWidth() {
@@ -117,7 +114,7 @@ public class TrafficAnimation extends JPanel
 	public static void main (String[] args)
 	{
 		// DO NOT MODIFY THIS CODE.
-		JFrame frame = new JFrame ("Traffic Animation");
+		JFrame frame = new JFrame("Traffic Animation");
 		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(new TrafficAnimation());
 		frame.pack();
