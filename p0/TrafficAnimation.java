@@ -26,13 +26,13 @@ public class TrafficAnimation extends JPanel
 	 * Note: 100ms is 10 frames per second - you should not need
 	 * a faster refresh rate than this
 	 */
-	private final int DELAY = 100; //milliseconds
+	private final int DELAY = 10; //milliseconds
 
 	/**
 	 * The anchor coordinate for drawing / animating. All of your vehicle's
 	 * coordinates should be relative to this offset value.
 	 */
-	private int xOffset = 0;
+	private int xOffset = -Math.min(getWidth(), getHeight()) / 20 * 3;
 
 	/**
 	 * The number of pixels added to xOffset each time paintComponent() is called.
@@ -54,27 +54,32 @@ public class TrafficAnimation extends JPanel
 		g.fillRect(0, 0, width, height);
 
 		// draw clouds
-		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, Color.BLUE);
-		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, Color.GREEN);
-		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, Color.ORANGE);
-		DrawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, Color.RED);
-		DrawPlanet(g, planetSize, -10, -8, UNITSIZE, Color.RED);
-
+		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59));
+		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, new Color(191, 141, 54));
+		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, new Color(91, 143, 70));
+		DrawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, new Color(60, 129, 130));
+		DrawPlanet(g, planetSize - 2 * UNITSIZE, -10, -7, UNITSIZE, new Color(102, 66, 90));
+		
 		// Calculate the new xOffset position of the moving object.
-		xOffset  = (xOffset + stepSize * UNITSIZE) % width;
-
+		if (xOffset >= width) {
+			xOffset = -UNITSIZE * 5;
+		}
+		else {
+			xOffset += stepSize * UNITSIZE / 10;
+		}
+		
 		// This draws the plane
 		int squareW = UNITSIZE * 3;
 		int squareH = UNITSIZE * 2;
 		int squareX = xOffset;
 		int squareY = GetCenterHeight() - squareW/2;
-
+		
 		g.setColor(Color.gray);
 		g.fillRect(squareX, squareY, squareW, squareH);
 		g.fillOval(squareX + squareW - squareH / 2, squareY, squareH, squareH);
 		g.fillRect(squareX, squareY - squareH / 4, squareW - UNITSIZE / 2, squareH / 2);
 		g.fillOval(squareX + (squareW - UNITSIZE / 2) - (squareH / 4), squareY - squareH / 4, squareH / 2, squareH / 2);
-
+		
 
 
 		// Put your code above this line. This makes the drawing smoother.
