@@ -92,6 +92,9 @@ public class TrafficAnimation extends JPanel
 		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, new Color(91, 143, 70), false);
 		Planet inhabitable = DrawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, new Color(60, 129, 130), true);
 		DrawPlanet(g, planetSize - 2 * UNITSIZE, -10, -7, UNITSIZE, new Color(102, 66, 90), false);
+
+		// draw the dude
+		
 		
 		
 		

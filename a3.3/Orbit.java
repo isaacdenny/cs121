@@ -28,8 +28,9 @@ public class Orbit extends JPanel
 	
 	private int orbitTheta;
 	private int orbitTDelta;
-
-	Random rand = new Random();
+  
+	// @keyterm psuedo-random number
+	Random rand = new Random(4);
 	
 	/**
 	 * Constructor. Sets the initial dimensions and starts the animation.
@@ -90,6 +91,8 @@ public class Orbit extends JPanel
 		// HINT: The Math.sin and Math.cos methods use radians for the parameter units. orbitTheta is in degrees.  
 		//       Try using the Math.toRadians() method to convert orbitTheta from degrees to radians. This will 
 		//       smooth out the orbit of your object.
+		// @keyterm static method
+		// @keyterm dot operator
 		double orbitX = earthX + orbitRadius * Math.cos(Math.toRadians(orbitTheta));
 		double orbitY = earthY + orbitRadius * Math.sin(Math.toRadians(orbitTheta));
 		
