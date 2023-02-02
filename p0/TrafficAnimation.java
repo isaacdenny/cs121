@@ -87,11 +87,11 @@ public class TrafficAnimation extends JPanel
 		}
 
 		// draw planets
-		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59));
-		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, new Color(191, 141, 54));
-		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, new Color(91, 143, 70));
-		DrawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, new Color(60, 129, 130));
-		DrawPlanet(g, planetSize - 2 * UNITSIZE, -10, -7, UNITSIZE, new Color(102, 66, 90));
+		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59), false);
+		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, new Color(191, 141, 54), true);
+		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, new Color(91, 143, 70), false);
+		DrawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, new Color(60, 129, 130), true);
+		DrawPlanet(g, planetSize - 2 * UNITSIZE, -10, -7, UNITSIZE, new Color(102, 66, 90), false);
 		
 		// Calculate the new xOffset position of the moving object.
 		if (xOffset >= width) {
@@ -138,10 +138,18 @@ public class TrafficAnimation extends JPanel
 	}
 
 
-	private void DrawPlanet(Graphics g, int planetSize, int x, int y, int unitSize, Color color) {
+	private void DrawPlanet(Graphics g, int size, int x, int y, int unitSize, Color color, Boolean hasRing) {
+		int ringSizeY = size / 2;
+		int ringSizeX = size * 2;
 		Point bodyAnchor = new Point(GetCenterWidth() + x * unitSize, GetCenterHeight() + y * unitSize);
 		g.setColor(color);
-		g.fillOval(bodyAnchor.x, bodyAnchor.y, planetSize, planetSize);
+		g.fillOval(bodyAnchor.x, bodyAnchor.y, size, size);
+		if (hasRing) {
+			g.setColor(Color.WHITE);
+			g.drawOval(bodyAnchor.x - size / 2, bodyAnchor.y + ringSizeY / 2, ringSizeX, ringSizeY);
+			g.setColor(color);
+			g.fillArc(bodyAnchor.x, bodyAnchor.y, size, size, 0, 180);
+		}
 	}
 
 	private int GetCenterWidth() {
