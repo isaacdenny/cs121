@@ -3,7 +3,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Random;
 import java.awt.Toolkit;
 import java.awt.Point;
@@ -25,6 +24,8 @@ public class TrafficAnimation extends JPanel
 {
 	Random random = new Random(4);
 	Boolean isFirstFrame = true;
+	final int UNITSIZE_MODIFIER = 20;
+	int[][] map = new int[UNITSIZE_MODIFIER][UNITSIZE_MODIFIER];
 	/**
 	 * A constant to regulate the frequency of Timer events.
 	 * Note: 100ms is 10 frames per second - you should not need
@@ -47,28 +48,40 @@ public class TrafficAnimation extends JPanel
 
 	public void paintComponent(Graphics g)
 	{
-		final int UNITSIZE_MODIFIER = 20;
+		
 		int width = getWidth();
 		int height = getHeight();
 		final int UNITSIZE = Math.min(width, height) / UNITSIZE_MODIFIER;
 		
 		int planetSize = 3 * UNITSIZE;
-		ArrayList<Integer> map = new ArrayList<Integer>();
+		
 
 		// fill background
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(0, 0, width, height);
 
 		if (isFirstFrame) {
-			for (int i = 0; i < UNITSIZE_MODIFIER; i++) {
-				for (int j = 0; j < UNITSIZE_MODIFIER; j++) {
-					if (random.nextInt() % 100 > 50) {
-						g.setColor(Color.WHITE);
-						g.fillOval(i * UNITSIZE, j * UNITSIZE, UNITSIZE / 4, UNITSIZE / 4);
+			for (int i = 0; i < map.length; i++) {
+				for (int j = 0; j < map[i].length; j++) {
+					if (random.nextInt() % 100 > 75) {
+						map[i][j] = 1;
+					} else {
+						map[i][j] = 0;
 					}
 				}
 			}
+			isFirstFrame = false;
 		}
+		
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j] == 1) {
+					g.setColor(Color.WHITE);
+					g.fillOval(i * getWidth() / UNITSIZE_MODIFIER, j * getHeight() / UNITSIZE_MODIFIER, UNITSIZE / 4, UNITSIZE / 4);
+				}
+			}
+		}
+
 
 		// draw planets
 		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59));
@@ -97,6 +110,13 @@ public class TrafficAnimation extends JPanel
 		// Windshield
 		g.setColor(new Color(60, 129, 130));
 		g.fillOval(squareX + (squareW - UNITSIZE / 2) - (squareH / 4), squareY - squareH / 4, squareH / 2, squareH / 2);
+		// Thruster 1
+		g.setColor(new Color(102, 66, 90));
+		g.fillArc(squareX - UNITSIZE * 2, squareY - squareH / 4, UNITSIZE * 2, UNITSIZE * 1, -90, 180);
+		// Thruster 2
+		g.setColor(new Color(102, 66, 90));
+		g.fillArc(squareX - UNITSIZE * 2, squareY + squareH / 2, UNITSIZE * 2, UNITSIZE * 1, -90, 180);
+		
 		//body
 		g.setColor(Color.WHITE);
 		g.fillRect(squareX, squareY, squareW, squareH);
@@ -104,12 +124,9 @@ public class TrafficAnimation extends JPanel
 		// stripe
 		g.setColor(new Color(102, 66, 90));
 		g.fillRect(squareX, squareY - squareH / 4, squareW / 8, squareH + squareH / 4);
-		// Wing
-		g.setColor(new Color(230, 230, 230));
-		g.fillArc(squareX - UNITSIZE * 2, squareY + squareH / 8, UNITSIZE * 4, UNITSIZE * 2, 0, -90);
 		
 
-		isFirstFrame = false;
+		
 		// Put your code above this line. This makes the drawing smoother.
 		Toolkit.getDefaultToolkit().sync();
 	}
