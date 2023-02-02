@@ -59,6 +59,10 @@ public class TrafficAnimation extends JPanel
 		// fill background
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(0, 0, width, height);
+		g.setColor(new Color(5, 0, 5));
+		g.fillRect(0, 0, width, GetCenterHeight() - UNITSIZE * 4);
+		g.setColor(new Color(5, 0, 5));
+		g.fillRect(0, GetCenterHeight() + UNITSIZE * 4, width, GetCenterHeight() - UNITSIZE * 4);
 
 		if (isFirstFrame) {
 			for (int i = 0; i < map.length; i++) {
@@ -82,7 +86,6 @@ public class TrafficAnimation extends JPanel
 			}
 		}
 
-
 		// draw planets
 		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59));
 		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, new Color(191, 141, 54));
@@ -99,6 +102,14 @@ public class TrafficAnimation extends JPanel
 		}
 		
 		// This draws the spaceship
+		DrawSpaceship(g, UNITSIZE);
+		
+		// Put your code above this line. This makes the drawing smoother.
+		Toolkit.getDefaultToolkit().sync();
+	}
+
+
+	private void DrawSpaceship(Graphics g, final int UNITSIZE) {
 		int squareW = UNITSIZE * 3;
 		int squareH = UNITSIZE * 2;
 		int squareX = xOffset;
@@ -124,16 +135,11 @@ public class TrafficAnimation extends JPanel
 		// stripe
 		g.setColor(new Color(102, 66, 90));
 		g.fillRect(squareX, squareY - squareH / 4, squareW / 8, squareH + squareH / 4);
-		
-
-		
-		// Put your code above this line. This makes the drawing smoother.
-		Toolkit.getDefaultToolkit().sync();
 	}
 
 
-	private void DrawPlanet(Graphics g, int planetSize, int xOffset, int yOffset, int unitSize, Color color) {
-		Point bodyAnchor = new Point(GetCenterWidth() + xOffset * unitSize, GetCenterHeight() + yOffset * unitSize);
+	private void DrawPlanet(Graphics g, int planetSize, int x, int y, int unitSize, Color color) {
+		Point bodyAnchor = new Point(GetCenterWidth() + x * unitSize, GetCenterHeight() + y * unitSize);
 		g.setColor(color);
 		g.fillOval(bodyAnchor.x, bodyAnchor.y, planetSize, planetSize);
 	}
