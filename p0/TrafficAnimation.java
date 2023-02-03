@@ -15,6 +15,7 @@ import javax.swing.Timer;
  * CS 121 Project 0: Traffic Animation
  *
  * Animates a spaceship flying through space.
+ * The stars are randomly generated on the first frame of the animation
  *
  * @author BSU CS 121 Instructors
  * @author Isaac Denny
@@ -59,11 +60,15 @@ public class TrafficAnimation extends JPanel
 		// fill background
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(0, 0, width, height);
-		g.setColor(new Color(5, 0, 5));
-		g.fillRect(0, 0, width, GetCenterHeight() - UNITSIZE * 4);
-		g.setColor(new Color(5, 0, 5));
-		g.fillRect(0, GetCenterHeight() + UNITSIZE * 4, width, GetCenterHeight() - UNITSIZE * 4);
+		// fill top of background with dark purple (to highlight the path of the spaceship)
+		g.setColor(new Color(10, 0, 10));
+		g.fillRect(0, 0, width, getCenterHeight() - UNITSIZE * 4);
+		// fill bottom of background with dark purple (to highlight the path of the spaceship)
+		g.setColor(new Color(10, 0, 10));
+		g.fillRect(0, getCenterHeight() + UNITSIZE * 4, width, getCenterHeight() - UNITSIZE * 4);
 
+		// fill the map (two dimensional array) with random 
+		// star positions on the first frame only
 		if (isFirstFrame) {
 			for (int i = 0; i < map.length; i++) {
 				for (int j = 0; j < map[i].length; j++) {
@@ -76,7 +81,8 @@ public class TrafficAnimation extends JPanel
 			}
 			isFirstFrame = false;
 		}
-		
+
+		// use the map previously generated to draw stars
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j] == 1) {
@@ -87,19 +93,34 @@ public class TrafficAnimation extends JPanel
 		}
 
 		// draw planets
-		DrawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59), false);
-		DrawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, new Color(191, 141, 54), true);
-		DrawPlanet(g, planetSize, 9, -5, UNITSIZE, new Color(91, 143, 70), false);
-		Planet inhabitable = DrawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, new Color(60, 129, 130), true);
-		DrawPlanet(g, planetSize - 2 * UNITSIZE, -10, -7, UNITSIZE, new Color(102, 66, 90), false);
+		drawPlanet(g, planetSize, -7, 4, UNITSIZE, new Color(196, 68, 59), false);
+		Planet textPlanet = drawPlanet(g, planetSize  - UNITSIZE, 0, -2, UNITSIZE, new Color(191, 141, 54), true); // store planet for text
+		drawPlanet(g, planetSize, 9, -5, UNITSIZE, new Color(91, 143, 70), false);
+		Planet inhabitable = drawPlanet(g, planetSize + 1 * UNITSIZE, -10, -8, UNITSIZE, new Color(60, 129, 130), true); // store this planet for dude positioning
+		drawPlanet(g, planetSize - 2 * UNITSIZE, -10, -7, UNITSIZE, new Color(102, 66, 90), false);
 
 		// draw the dude
+		int alienW = UNITSIZE / 2;
+		int alienH = UNITSIZE;
+		Point alienPos = new Point(inhabitable.GetPosition().x + inhabitable.GetSize() / 2 - alienW / 2, inhabitable.GetPosition().y - alienH);
+
+		g.setColor(Color.YELLOW);
+		g.fillRect(alienPos.x, alienPos.y, alienW, alienH);
+		g.setColor(Color.black);
+		g.fillRect(alienPos.x + alienW / 4, alienPos.y, alienW / 2, alienH / 4);
+		// right hand
+		g.setColor(Color.YELLOW);
+		g.fillArc(alienPos.x + alienW, alienPos.y + alienH / 2, alienW / 4, alienH / 4, -90, 180);
+		// left hand
+		g.setColor(Color.YELLOW);
+		g.fillArc(alienPos.x - alienW / 4, alienPos.y + alienH / 2, alienW / 4, alienH / 4, 90, 180);
 		
-		
-		
+		// draw text
+		g.setColor(Color.WHITE);
+		g.drawString("\"The Final Frontier\"", textPlanet.GetPosition().x + textPlanet.GetSize() / 2, textPlanet.GetPosition().y - UNITSIZE);
 		
 		// Calculate the new xOffset position of the moving object.
-		if (xOffset >= width) {
+		if (xOffset >= width + UNITSIZE * 2) {
 			xOffset = -UNITSIZE * 5;
 		}
 		else {
@@ -118,7 +139,7 @@ public class TrafficAnimation extends JPanel
 		int squareW = UNITSIZE * 3;
 		int squareH = UNITSIZE * 2;
 		int squareX = xOffset;
-		int squareY = GetCenterHeight() - squareW / 2;
+		int squareY = getCenterHeight() - squareW / 2;
 		
 		// nose
 		g.setColor(new Color(102, 66, 90));
@@ -143,18 +164,18 @@ public class TrafficAnimation extends JPanel
 	}
 
 
-	private Planet DrawPlanet(Graphics g, int size, int x, int y, int unitSize, Color color, Boolean hasRing) {
-		Point bodyAnchor = new Point(GetCenterWidth() + x * unitSize, GetCenterHeight() + y * unitSize);
+	private Planet drawPlanet(Graphics g, int size, int x, int y, int unitSize, Color color, Boolean hasRing) {
+		Point bodyAnchor = new Point(getCenterWidth() + x * unitSize, getCenterHeight() + y * unitSize);
 		Planet planet = new Planet(g, bodyAnchor, size, color, hasRing);
 		planet.Draw();
 		return planet;
 	}
 
-	private int GetCenterWidth() {
+	private int getCenterWidth() {
 		return getWidth() / 2;
 	}
 
-	private int GetCenterHeight() {
+	private int getCenterHeight() {
 		return getHeight() / 2;
 	}
 
