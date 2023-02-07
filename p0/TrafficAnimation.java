@@ -141,6 +141,10 @@ public class TrafficAnimation extends JPanel
 		int squareX = xOffset;
 		int squareY = getCenterHeight() - squareW / 2;
 		
+		// line trails
+		g.setColor(Color.white);
+		g.drawLine(squareX + squareW / 2, squareY + squareH / 2, squareX - UNITSIZE * 3, squareY + UNITSIZE * 2);
+		g.drawLine(squareX + squareW / 2, squareY + squareH / 2, squareX - UNITSIZE * 3, squareY - UNITSIZE);
 		// nose
 		g.setColor(new Color(102, 66, 90));
 		g.fillOval(squareX + squareW - squareH / 2, squareY, squareH, squareH);
