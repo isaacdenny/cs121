@@ -13,6 +13,7 @@ public class AdGenerator {
     System.out.println("\n\nWelcome to AdGenerator!");
     System.out.println("Please enter your profile information");
     System.out.println("=====================================");
+    
     System.out.print("First Name: ");
     String firstName = scanner.nextLine();
     System.out.print("Middle Name: ");
@@ -25,6 +26,7 @@ public class AdGenerator {
     String phoneNumber = scanner.nextLine();
     System.out.print("Hourly rate: ");
     double hourlyRate = scanner.nextDouble();
+
     // @keyterm static method invocation
     int areaCode = Integer.valueOf(phoneNumber.substring(0, 3));
     System.out.println("\n\n=====================================");
