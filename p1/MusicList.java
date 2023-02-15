@@ -22,11 +22,27 @@ public class MusicList {
 
     double averagePlayTime = CalculateAveragePlayTime(track1, track2, track3);
     System.out.println("Average play time: " + df.format(averagePlayTime));
+    System.out.println();
 
     Track closestToTarget = GetClosestToMinutes(track1, track2, track3, 3);
     System.out.println("Track with play time closest to 180 seconds is: " + closestToTarget.getTitle());
+    System.out.println();
+
+    PrintSortedMusicList(track1, track2, track3, df);
     
     scanner.close();
+  }
+
+  private static void PrintSortedMusicList(Track track1, Track track2, Track track3, DecimalFormat df) {
+    String columnNames = "Title                          Artist               Album                           Time";
+    String div = "========================================================================================";
+    System.out.println(div);
+    System.out.println(columnNames);
+    System.out.println(div);
+    System.out.println(track1.toString());
+    System.out.println(track2.toString());
+    System.out.println(track3.toString());
+    System.out.println(div);
   }
 
   private static Track GetClosestToMinutes(Track track1, Track track2, Track track3, int minutesTarget) {
@@ -65,8 +81,14 @@ public class MusicList {
     title = scanner.nextLine();
     System.out.print("Enter play time (mm:ss): ");
     playTime = scanner.nextLine();
+    if (playTime.length() > 5) {
+      playTime = playTime.substring(0, 5);
+    }
 
     int colonIndex = playTime.indexOf(':');
+    if (colonIndex == -1) {
+      return new Track("ERROR", "ERROR", "ERROR", 0);
+    }
     int min = Integer.parseInt(playTime.substring(0, colonIndex));
     int sec = Integer.parseInt(playTime.substring(colonIndex + 1));
     int totalSeconds = min * 60 + sec;
