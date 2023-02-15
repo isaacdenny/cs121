@@ -39,9 +39,39 @@ public class MusicList {
     System.out.println(div);
     System.out.println(columnNames);
     System.out.println(div);
-    System.out.println(track1.toString());
-    System.out.println(track2.toString());
-    System.out.println(track3.toString());
+    if (track1.getPlayTime() > track2.getPlayTime() && track1.getPlayTime() > track3.getPlayTime()) {
+      System.out.println(track1.toString());
+      if (track2.getPlayTime() < track3.getPlayTime()) {
+        System.out.println(track3.toString());
+        System.out.println(track2.toString());
+      }
+      else {
+        System.out.println(track2.toString());
+        System.out.println(track3.toString());
+      }
+    }
+    else if (track2.getPlayTime() > track1.getPlayTime() && track2.getPlayTime() > track3.getPlayTime()) {
+      System.out.println(track2.toString());
+      if (track2.getPlayTime() < track3.getPlayTime()) {
+        System.out.println(track3.toString());
+        System.out.println(track1.toString());
+      }
+      else {
+        System.out.println(track1.toString());
+        System.out.println(track3.toString());
+      }
+    }
+    else {
+      System.out.println(track3.toString());
+      if (track1.getPlayTime() < track2.getPlayTime()) {
+        System.out.println(track2.toString());
+        System.out.println(track1.toString());
+      }
+      else {
+        System.out.println(track1.toString());
+        System.out.println(track2.toString());
+      }
+    }
     System.out.println(div);
   }
 
