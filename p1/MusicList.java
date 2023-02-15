@@ -2,11 +2,19 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /**
- *  The <code>MusicList</code> class reads music lists and outputs some statistics in the console.
- *  Author Isaac Denny
+ *  CS 121 Project 1: Music List Analyzer
+ *  
+ *  The <code>MusicList</code> class prompts the user for information about 3 tracks and 
+ *  outputs related statistics and a sorted list in the console.
+ *  @author Isaac Denny
  */
 
 public class MusicList {
+  /**
+	 * Starting point for this program.
+	 *
+	 * @param args unused
+	 */
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     DecimalFormat df = new DecimalFormat("0.00");
