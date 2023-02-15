@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /**
@@ -8,6 +9,7 @@ import java.util.Scanner;
 public class MusicList {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
+    DecimalFormat df = new DecimalFormat("0.00");
     
     Track track1 = PromptForTrack(scanner);
     System.out.println(track1.toString());
@@ -17,8 +19,36 @@ public class MusicList {
 
     Track track3 = PromptForTrack(scanner);
     System.out.println(track3.toString());
+
+    double averagePlayTime = CalculateAveragePlayTime(track1, track2, track3);
+    System.out.println("Average play time: " + df.format(averagePlayTime));
+
+    Track closestToTarget = GetClosestToMinutes(track1, track2, track3, 3);
+    System.out.println("Track with play time closest to 180 seconds is: " + closestToTarget.getTitle());
     
     scanner.close();
+  }
+
+  private static Track GetClosestToMinutes(Track track1, Track track2, Track track3, int minutesTarget) {
+    int secondsTarget = minutesTarget * 60;
+
+    int t1Distance = Math.abs(track1.getPlayTime() - secondsTarget);
+    int t2Distance = Math.abs(track2.getPlayTime() - secondsTarget);
+    int t3Distance = Math.abs(track3.getPlayTime() - secondsTarget);
+    
+    if (t1Distance < t2Distance && t1Distance < t3Distance) {
+      return track1;
+    }
+    else if (t2Distance < t1Distance && t2Distance < t3Distance) {
+      return track2;
+    }
+    else {
+      return track3;
+    }
+  }
+
+  private static double CalculateAveragePlayTime(Track track1, Track track2, Track track3) {
+    return (track1.getPlayTime() + track2.getPlayTime() + track3.getPlayTime()) / 3.0;
   }
 
   private static Track PromptForTrack(Scanner scanner) {
