@@ -1,0 +1,43 @@
+Activity 4-2 Questions
+
+=================
+
+DoubleComparison.java Questions
+
+Look at the “Variables” section in the debugger panel.  What is the value of the result variable? What is the value of the expected variable? Why aren’t they the same?
+
+  result is 0.09999999999999998, while expected is 0.10000000000000000. They aren't the same because of floating point inprecision. This is why we cannot directly compare them.
+
+Does it go into the if-statement, or the else-statement? Why?
+
+  It goes into the else-statement because the result variable is not equal to the expected variable due to floating point inprecision.
+
+=================
+
+StringComparison.java Questions
+
+What is the value (labeled “value”) of CODE_WORD? What is the id (number after @)?  What is the value of myWord? What is the id? 
+
+  The value of CODE_WORD is byte[6]@22 and the id is 22. The value of myWord is byte[6]@22 and the id is 22.
+
+Does it go into the if-statement block, or else block? Why?
+
+  It goes into the if-statement block because the CODE_WORD variable and myWord variable are pointing to the same memory location.
+
+What is the value of CODE_WORD? What is the id?  What is the value of input? What is the id?
+
+  The value of CODE_WORD is byte[6]@22 and the id is 22. The value of input is byte[6]@30 and the id is 30.
+
+Use the “Step over” icon to execute the next line of code. Does it go into the if-statement block, or else block? Why?
+
+  It goes into the else-statement block because the input and CODE_WORD pointers are pointing to different memory locations.
+
+==================
+
+CharacterComparison.java Questions
+
+Look at the “Variables” panel. What is the value of firstLetter?  What is the value of asciiValue?
+
+  The value of firstLetter is p and the value of asciiValue is 112
+
+==================
