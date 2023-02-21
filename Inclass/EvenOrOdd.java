@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class while_loop2 {
+public class EvenOrOdd {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     System.out.print("Please enter a number: ");
