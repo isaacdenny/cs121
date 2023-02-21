@@ -20,13 +20,10 @@ public class MusicList {
     DecimalFormat df = new DecimalFormat("0.00");
     
     Track track1 = PromptForTrack(scanner);
-    System.out.println(track1.toString());
 
     Track track2 = PromptForTrack(scanner);
-    System.out.println(track2.toString());
 
     Track track3 = PromptForTrack(scanner);
-    System.out.println(track3.toString());
 
     double averagePlayTime = CalculateAveragePlayTime(track1, track2, track3);
     System.out.println("Average play time: " + df.format(averagePlayTime));
@@ -60,7 +57,7 @@ public class MusicList {
     }
     else if (track2.getPlayTime() > track1.getPlayTime() && track2.getPlayTime() > track3.getPlayTime()) {
       System.out.println(track2.toString());
-      if (track2.getPlayTime() < track3.getPlayTime()) {
+      if (track1.getPlayTime() < track3.getPlayTime()) {
         System.out.println(track3.toString());
         System.out.println(track1.toString());
       }
@@ -131,6 +128,6 @@ public class MusicList {
     int sec = Integer.parseInt(playTime.substring(colonIndex + 1));
     int totalSeconds = min * 60 + sec;
 
-    return new Track(album, artist, title, totalSeconds);
+    return new Track(title, artist, album, totalSeconds);
   }
 }
