@@ -1,0 +1,13 @@
+Enter album:Enter artist:Enter title:Enter play time (mm:ss):03:52
+Enter album:Enter artist:Enter title:Enter play time (mm:ss):Enter album:Enter artist:Enter title:Enter play time (mm:ss):
+Average playtime: 232.00
+
+Track with play time closest to 180 secs is: Kings of the Weekend
+
+========================================================================================
+Title                          Artist               Album                           Time
+========================================================================================
+Kings of the Weekend           Blink-182            California                       232
+Potatoes All Weekend           Blink-170            Idaho                            232
+Queens of the Weekend          Blink-182            New York                         232
+========================================================================================

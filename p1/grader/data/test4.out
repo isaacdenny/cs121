@@ -1,0 +1,13 @@
+Enter album:Enter artist:Enter title:Enter play time (mm:ss):2:09
+Enter album:Enter artist:Enter title:Enter play time (mm:ss):Enter album:Enter artist:Enter title:Enter play time (mm:ss):
+Average playtime: 150.00
+
+Track with play time closest to 180 secs is: Time of Your Life
+
+========================================================================================
+Title                          Artist               Album                           Time
+========================================================================================
+Time of Your Life              Green Day            Nimrod                           192
+Kings of the Weekend           Blink-182            California                       129
+Queens of the Weekend          Blink-182            New York                         129
+========================================================================================
