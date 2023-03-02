@@ -1,0 +1,13 @@
+Enter album:Enter artist:Enter title:Enter play time (mm:ss):2:09
+Enter album:Enter artist:Enter title:Enter play time (mm:ss):Enter album:Enter artist:Enter title:Enter play time (mm:ss):
+Average playtime: 172.67
+
+Track with play time closest to 180 secs is: Kings of the Weekend
+
+========================================================================================
+Title                          Artist               Album                           Time
+========================================================================================
+Never Gonna Find Me            The Offspring        Splinter                         260
+Kings of the Weekend           Blink-182            California                       129
+Queens of the Weekend          Blink-182            New York                         129
+========================================================================================
