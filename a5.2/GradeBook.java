@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.xml.catalog.Catalog;
+
 /**
  * Lesson 13: Activity - GradeBook
  *
@@ -11,40 +13,44 @@ import java.util.Scanner;
  */
 public class GradeBook {
 
-	public static void main(String[] args) {
-		
-		/* TODO: 1. Create a new ArrayList of Student objects called gradebook. */
-		
-		
-		/* TODO: 2. Create a new File object for gradebook.csv and 
-		 * a new Scanner object to parse it. Catch any required 
-		 * exceptions and display a useful message to the user.
-		 */
+  public static void main(String[] args) {
+    ArrayList<Student> gradebook = new ArrayList<Student>();
+    File gradebookFile = new File("gradebook.csv");
 
-				
-			/* TODO: 3. Use a while loop and the Scanner created above to iterate 
-			 * through the lines in the gradebook.csv file.
-			 */
+    try (Scanner fileScanner = new Scanner(gradebookFile);) {
+      while (fileScanner.hasNext()) {
+        String scannedLine = fileScanner.nextLine(); // @keyterm scanner
+        System.out.println(
+          "DEBUG: Processing student record -> " + scannedLine
+        );
+        try (Scanner studentScanner = new Scanner(scannedLine);) {
+          studentScanner.useDelimiter(","); // @keyterm delimiter
+          String lastName = studentScanner.next();
+          String firstName = studentScanner.next(); // @keyterm token
+          int id = Integer.parseInt(studentScanner.next());
+          int grade = Integer.parseInt(studentScanner.next()); // @keyterm parsing
 
+          Student student = new Student(lastName, firstName, id);
+          student.setGrade(grade);
 
-				/* TODO: 4. For each line (student record), use a second 
-				 * Scanner object to tokenize the line using a comma (',')
-				 * as the delimiter, extract values for lastName, firstName,
-				 * id and grade and store them to local variables.
-			 	 */
-
-
-			 	/* TODO: 5. Create a new Student object using the local variables
-			 	 * create above, set the student's grade, and finally add the 
-			 	 * new Student object to the gradebook ArrayList. 
-				 */
-
-		
-		
-		/* TODO: 6. Use a foreach loop to print out contents of the gradebook */
-
-		
-
-	}
-
+          gradebook.add(student);
+        } catch (Exception e) { // @keyterm catching an exception
+          System.out.println(
+            e.getMessage() != null
+              ? e.getMessage()
+              : "Cannot read line: " + scannedLine
+          );
+        }
+      }
+      for (Student student : gradebook) {
+        System.out.println(student.toString());
+      }
+    } catch (FileNotFoundException e) {
+      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      System.out.println(
+        e.getMessage() != null ? e.getMessage() : "Unknown error"
+      );
+    }
+  }
 }
