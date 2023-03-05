@@ -6,28 +6,27 @@
 
 ## Overview
 
-This program asks the user to enter information for three music tracks, the album,
-artist, title, and playtime. The program then finds the average play time and
-the track with a play time closest to 3 minutes and outputs that information with 
-a sorted list of the tracks.
+This program implements a jukebox-like menu UI to allow the user to perform
+various operations on a catalog of music titles. The program starts by displaying
+the menu UI to show a list of possible commands (Load, Searh, Analyze, Print, and
+Quit).
 
 ## Reflection
 
-This project had very repetitive portions, and the limitations against using arrays
-and loops were annoying.
+This project was fun and required most of what we learned to be applied. I enjoyed it.
 - What worked well and what was a struggle?
-    Using methods to simplify the main method and increase readability
-    was a good solution, and allowed me to repeat operations without
-    rewriting the same code. I did not struggle with anything on this
-    project.
+    Wrapping the whole program in a while loop that only continued if the user input was
+    not a "q" worked well, allowing me to use the switch statement just for more complex
+    operations on the catalog. This way the "quit" operation is scoped (in a way) to
+    the program rather than the catalog actions. Writing the code all inside main was
+    a struggle mentally.
 - What concepts still aren't quite clear?
     I think I've got it!
 - What techniques did you use to make your code easy to debug and modify?
-    I used methods to reuse functionality without rewriting the same code.
+    I made sure my formatting was consistent and readable.
 - What would you change about your design process?
-    I would use loops instead of all of the nested if statements. I
-    would also add better error handling so that you cannot accidentally input
-    a weird value for the playtime of a track.
+    I would just change how I caught exceptions so that the exception message is specific
+    to the type of exception.
 - If you could go back in time, what would you tell yourself about doing this project?
     I would say get Panda Express before starting.
 
@@ -42,7 +41,7 @@ Run the compiled class with the command:
 $ java JukeboxHero
 ```
 
-You should then see prompts in the console for track information.
+You should then see the program menu in the console.
 
 ## Sources used
 
