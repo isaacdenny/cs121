@@ -32,7 +32,7 @@ public class JukeboxHero {
     System.out.print("Please enter a command (press 'm' for Menu): ");
     String input = keyScanner.nextLine().toLowerCase();
 
-    while (input != null) {
+    while (!input.equals("q")) {
       switch (input) {
         case "m":
           System.out.println();
@@ -102,9 +102,36 @@ public class JukeboxHero {
           for (Song song : searchResults) {
             System.out.println(song.toString());
           }
-
+          System.out.println();
           break;
         case "a":
+          if (songList.size() == 0) {
+            System.out.println();
+            System.out.println("No Catalog currently loaded. Please (L)oad a catalog first...");
+            System.out.println();
+            break;
+          }
+          ArrayList<String> artistList = new ArrayList<String>();
+          ArrayList<String> albumList = new ArrayList<String>();
+          int catalogPlaytime = 0;
+
+          System.out.println("Catalog analysis...");
+          for (Song song : songList) {
+            if (!artistList.contains(song.getArtist())) {
+              artistList.add(song.getArtist());
+            }
+            if (!albumList.contains(song.getAlbum())) {
+              albumList.add(song.getAlbum());
+            }
+            catalogPlaytime += song.getPlayTime();
+          }
+
+          System.out.println("  Number of Artists: " + artistList.size());
+          System.out.println("  Number of Albums: " + albumList.size());
+          System.out.println("  Number of Songs: " + songList.size());
+          System.out.println("  Catalog Playtime: " + catalogPlaytime);
+          System.out.println();
+
           break;
         case "p":
           System.out.println();
@@ -115,19 +142,16 @@ public class JukeboxHero {
           }
           System.out.println();
           break;
-        case "q":
-          System.out.println("Goodbye!");
-          break;
         default:
           System.out.println("Invalid selection!");
           break;
       }
 
-      if (!input.equals("q")) {
-        System.out.print("Please enter a command (press 'm' for Menu): ");
-        input = keyScanner.nextLine();
-      }
+      System.out.print("Please enter a command (press 'm' for Menu): ");
+      input = keyScanner.nextLine();
     }
+
+    System.out.println("Goodbye!");
 
     keyScanner.close();
   }
