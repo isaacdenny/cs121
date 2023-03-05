@@ -19,6 +19,7 @@ public class JukeboxHero {
     ArrayList<Song> songList = new ArrayList<Song>();
     Scanner keyScanner = new Scanner(System.in);
 
+    System.out.println();
     System.out.println("*****************************");
     System.out.println("*      Program Menu         *");
     System.out.println("*****************************");
@@ -29,11 +30,12 @@ public class JukeboxHero {
     System.out.println("(Q)uit");
     System.out.println();
     System.out.print("Please enter a command (press 'm' for Menu): ");
-    String input = keyScanner.nextLine();
+    String input = keyScanner.nextLine().toLowerCase();
 
     while (input != null) {
-      switch (input.toLowerCase()) {
+      switch (input) {
         case "m":
+          System.out.println();
           System.out.println("*****************************");
           System.out.println("*      Program Menu         *");
           System.out.println("*****************************");
@@ -46,7 +48,7 @@ public class JukeboxHero {
           break;
         case "l":
           System.out.println("Load catalog...");
-          System.out.println("Please enter filename: ");
+          System.out.print("Please enter filename: ");
 
           String filename = keyScanner.nextLine();
           File file = new File(filename);
@@ -66,24 +68,52 @@ public class JukeboxHero {
                 songList.add(song);
               } catch (Exception e) {
                 System.out.println(
-                  e.getMessage() != null
-                    ? e.getMessage()
-                    : "Cannot read line: " + scannedLine
-                );
+                    e.getMessage() != null
+                        ? e.getMessage()
+                        : "Cannot read line: " + scannedLine);
               }
-
             }
+            System.out.println("Successfully loaded " + songList.size() + " songs!");
+            System.out.println();
           } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
+            System.out.println();
           } catch (Exception e) {
-            System.out.println("Error opening file");
+            System.out.println("Unable to read file: " + filename);
+            System.out.println();
           }
           break;
         case "s":
+          ArrayList<Song> searchResults = new ArrayList<Song>();
+
+          System.out.println();
+          System.out.println("Search catalog...");
+          System.out.print("Please enter search query: ");
+          String searchQuery = keyScanner.nextLine().toLowerCase();
+
+          for (Song song : songList) {
+            if (song.getTitle().toLowerCase().contains(searchQuery)) {
+              searchResults.add(song);
+            }
+          }
+
+          System.out.println("Found " + searchResults.size() + " matches");
+          System.out.println("---------------------------------");
+          for (Song song : searchResults) {
+            System.out.println(song.toString());
+          }
+
           break;
         case "a":
           break;
         case "p":
+          System.out.println();
+          System.out.println("Song list contains " + songList.size() + " songs...");
+          System.out.println("---------------------------------");
+          for (Song song : songList) {
+            System.out.println(song.toString());
+          }
+          System.out.println();
           break;
         case "q":
           System.out.println("Goodbye!");
@@ -92,8 +122,11 @@ public class JukeboxHero {
           System.out.println("Invalid selection!");
           break;
       }
-      System.out.print("Please enter a command (press 'm' for Menu): ");
-      input = keyScanner.nextLine();
+
+      if (!input.equals("q")) {
+        System.out.print("Please enter a command (press 'm' for Menu): ");
+        input = keyScanner.nextLine();
+      }
     }
 
     keyScanner.close();
