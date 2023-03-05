@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,7 +10,9 @@ import java.util.Scanner;
 public class JukeboxHero {
 
   /**
-   *
+   * main method for the JukeboxHero application. It features 
+   * an absolutely disgusting amount of code for just one method.
+   * 
    * @param args (command line arguments)
    * @throws Exception
    */
@@ -51,8 +52,12 @@ public class JukeboxHero {
           System.out.print("Please enter filename: ");
 
           String filename = keyScanner.nextLine();
-          File file = new File(filename);
 
+          if (filename == null || filename.equals("")) {
+            System.out.println("Filename cannot be empty.");
+            break;
+          }
+          File file = new File(filename);
           try (Scanner fileScanner = new Scanner(file);) {
             songList.clear();
             while (fileScanner.hasNext()) {
@@ -75,11 +80,8 @@ public class JukeboxHero {
             }
             System.out.println("Successfully loaded " + songList.size() + " songs!");
             System.out.println();
-          } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-            System.out.println();
           } catch (Exception e) {
-            System.out.println("Unable to read file: " + filename);
+            System.out.println("Unable to open file: " + filename);
             System.out.println();
           }
           break;
@@ -105,12 +107,6 @@ public class JukeboxHero {
           System.out.println();
           break;
         case "a":
-          if (songList.size() == 0) {
-            System.out.println();
-            System.out.println("No Catalog currently loaded. Please (L)oad a catalog first...");
-            System.out.println();
-            break;
-          }
           ArrayList<String> artistList = new ArrayList<String>();
           ArrayList<String> albumList = new ArrayList<String>();
           int catalogPlaytime = 0;
@@ -148,7 +144,7 @@ public class JukeboxHero {
       }
 
       System.out.print("Please enter a command (press 'm' for Menu): ");
-      input = keyScanner.nextLine();
+      input = keyScanner.nextLine().toLowerCase();
     }
 
     System.out.println("Goodbye!");
