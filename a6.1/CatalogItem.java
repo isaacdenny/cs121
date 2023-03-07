@@ -5,10 +5,10 @@ import java.text.NumberFormat;
  * @author Isaac Denny
  */
 public class CatalogItem {
-  
+
   private String name;
-  private String description;
-  private double price;
+  private String description; // @keyterm visibility modifier
+  private double price; // @keyterm encapsulation
 
   /**
    * Constructs a new CatalogItem
@@ -53,7 +53,7 @@ public class CatalogItem {
    * Gets the description of the item.
    * @return String
    */
-  public String getDescription() {
+  public String getDescription() { // @keyterm return type
     return description;
   }
 
@@ -62,8 +62,7 @@ public class CatalogItem {
    * @param price
    */
   public void setPrice(double price) {
-    if (price < 0)
-      price = 0;
+    if (price < 0) price = 0;
     this.price = price;
   }
 
@@ -77,7 +76,7 @@ public class CatalogItem {
 
   /**
    * Returns a String to be used for display in the format
-   * 
+   *
    * <name> (<price>)
    * <description>
    */
@@ -89,5 +88,4 @@ public class CatalogItem {
 
     return res;
   }
-
 }

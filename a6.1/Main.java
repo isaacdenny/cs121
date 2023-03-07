@@ -1,14 +1,22 @@
 /**
  * Driver for CatalogItem
  * Tests the functionality of CatalogItem
- * 
+ *
  * @author Isaac Denny
  */
-public class Main {
-  
+public class Main { // @keyterm driver class
+
+  /**
+   * entry point for catalog
+   * @param args
+   */
   public static void main(String[] args) {
     CatalogItem banana = new CatalogItem("Golden Banana", 0.45);
-    CatalogItem legendaryDragon = new CatalogItem("Legendary Dragon", "Firehazard, keep away from children", 3.50);
+    CatalogItem legendaryDragon = new CatalogItem(
+      "Legendary Dragon",
+      "Firehazard, keep away from children",
+      3.50
+    );
 
     System.out.println(banana.toString());
     System.out.println(legendaryDragon.toString());
@@ -21,10 +29,9 @@ public class Main {
         System.out.println("Should be 0: " + banana.getPrice());
       }
     }
-    
+
     System.out.println("Should be 'Golden Banana': " + banana.getName());
     banana.setDescription("Mmm Tasty");
     System.out.println("Should be 'Mmm Tasty': " + banana.getDescription());
-
   }
 }
