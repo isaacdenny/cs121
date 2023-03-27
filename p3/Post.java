@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
 import java.time.Instant;
@@ -11,14 +12,16 @@ public class Post implements PostInterface {
   private int postID;
   private ArrayList<String> comments;
 
+  private DecimalFormat df = new DecimalFormat("00000.#");
+
   /**
    * Constructs a new Post with the given id, author, and text.
+   * 
    * @param id
    * @param author
    * @param text
    */
   public Post(int id, String author, String text) {
-    DecimalFormat df = new DecimalFormat("00000.#");
     this.postID = id;
     this.author = author;
     this.text = text;
@@ -26,9 +29,9 @@ public class Post implements PostInterface {
     this.timestamp = Instant.now();
     this.comments = new ArrayList<String>();
 
+    File postFile = new File("Post-" + df.format(postID) + ".txt");
     try {
-      File postFile = new File("Post-" + df.format(postID) + ".txt");
-      if (postFile.createNewFile()) {
+      if (!postFile.exists() && postFile.createNewFile()) {
         FileWriter fileWriter = new FileWriter(postFile);
         String toWrite = df.format(postID) + " " + timestamp.toString() + " " + this.author + " " + this.text;
         fileWriter.write(toWrite);
@@ -40,72 +43,97 @@ public class Post implements PostInterface {
   }
 
   /**
-   * Attempts to construct a new Post object from a previously written file based on the given post ID
+   * Attempts to construct a new Post object from a previously written file based
+   * on the given post ID
+   * 
    * @param id
    */
   public Post(int id) {
-    DecimalFormat df = new DecimalFormat("00000.#");
-    String fileName = "Post-" + df.format(id) + ".txt";
-    try (Scanner fileScanner = new Scanner(fileName)) {
+    File file = new File("Post-" + df.format(id) + ".txt");
+    try (Scanner fileScanner = new Scanner(file)) {
       if (!fileScanner.hasNext())
-        System.out.println("File empty: " + fileName);
-      
+        System.out.println("File empty: " + file.getName());
+
       // read initial values
       this.postID = Integer.parseInt(fileScanner.next());
       this.timestamp = Instant.parse(fileScanner.next());
       this.author = fileScanner.next();
-      this.text = fileScanner.nextLine();
+      this.text = fileScanner.next() + fileScanner.nextLine();
 
       // read all comments
       while (fileScanner.hasNext()) {
         this.comments.add(fileScanner.nextLine());
       }
-    }
-    catch (Exception e) {
+    } catch (FileNotFoundException e) {
+      System.out.println(e.getMessage());
+    } catch (Exception e) {
       System.out.println(e.getMessage() != null ? e.getMessage() : "Error creating file " + postID);
     }
   }
 
   @Override
   public void addComment(String author, String text) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'addComment'");
+    Instant currentTime = Instant.now();
+    String comment = currentTime + " " + author + " " + text;
+    this.comments.add(comment);
+
+    String fileName = "Post-" + df.format(this.postID) + ".txt";
+    File file = new File(fileName);
+    try (FileWriter fileWriter = new FileWriter(file, true)) {
+      fileWriter.write("\n" + comment);
+    } catch (Exception e) {
+      System.out.println(e.getMessage() != null ? e.getMessage() : "Error writing to file: " + fileName);
+    }
+  }
+
+  @Override
+  public String toString() {
+    String toReturn = "Post:\n";
+    String fileName = "Post-" + df.format(this.postID) + ".txt";
+    File file = new File(fileName);
+    try (Scanner fileScanner = new Scanner(file)) {
+      toReturn += fileScanner.nextLine() + "\n";
+      toReturn += "Comments:\n";
+      while (fileScanner.hasNext()) {
+        toReturn += fileScanner.nextLine() + "\n";
+      }
+      System.out.println(toReturn);
+      return toReturn;
+    } catch (Exception e) {
+      System.out.println(e.getMessage() != null ? e.getMessage() : "Error reading file: " + fileName);
+      return null;
+    }
   }
 
   @Override
   public String toStringPostOnly() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'toStringPostOnly'");
+    return df.format(this.postID) + " " + this.timestamp + " " + this.author + " " + this.text;
   }
 
   @Override
   public String getFilename() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getFilename'");
+    String fileName = "Post-" + df.format(this.postID) + ".txt";
+    return fileName;
   }
 
   @Override
   public int getPostID() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getPostID'");
+    return this.postID;
   }
 
   @Override
   public String getText() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getText'");
+    return this.text;
   }
 
   @Override
   public Instant getTimestamp() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getTimestamp'");
+    return this.timestamp;
   }
 
   @Override
   public String getAuthor() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getAuthor'");
+    return this.author;
   }
-  
+
 }
