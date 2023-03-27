@@ -3,6 +3,7 @@ import java.io.FileWriter;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Post implements PostInterface {
   private String author, text;
@@ -10,6 +11,12 @@ public class Post implements PostInterface {
   private int postID;
   private ArrayList<String> comments;
 
+  /**
+   * Constructs a new Post with the given id, author, and text.
+   * @param id
+   * @param author
+   * @param text
+   */
   public Post(int id, String author, String text) {
     DecimalFormat df = new DecimalFormat("00000.#");
     this.postID = id;
@@ -32,8 +39,31 @@ public class Post implements PostInterface {
     }
   }
 
+  /**
+   * Attempts to construct a new Post object from a previously written file based on the given post ID
+   * @param id
+   */
   public Post(int id) {
-    // TODO constructor stub
+    DecimalFormat df = new DecimalFormat("00000.#");
+    String fileName = "Post-" + df.format(id) + ".txt";
+    try (Scanner fileScanner = new Scanner(fileName)) {
+      if (!fileScanner.hasNext())
+        System.out.println("File empty: " + fileName);
+      
+      // read initial values
+      this.postID = Integer.parseInt(fileScanner.next());
+      this.timestamp = Instant.parse(fileScanner.next());
+      this.author = fileScanner.next();
+      this.text = fileScanner.nextLine();
+
+      // read all comments
+      while (fileScanner.hasNext()) {
+        this.comments.add(fileScanner.nextLine());
+      }
+    }
+    catch (Exception e) {
+      System.out.println(e.getMessage() != null ? e.getMessage() : "Error creating file " + postID);
+    }
   }
 
   @Override
