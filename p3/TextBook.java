@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class TextBook implements TextBookInterface {
     File postsFile = new File(POST_LIST_FILENAME);
     try (Scanner fileScanner = new Scanner(postsFile)) {
       while (fileScanner.hasNextLine()) {
-        String id = fileScanner.next();
+        String id = fileScanner.nextLine();
         File file = new File("Post-" + id + ".txt");
         try (Scanner reader = new Scanner(file)) {
           Post post = new Post(reader.nextInt());
@@ -49,7 +50,7 @@ public class TextBook implements TextBookInterface {
 
   @Override
   public String getPostString(int index) {
-    if (index >= 0 && index <= posts.size() - 1) {
+    if (index >= 0 && index < posts.size()) {
       return posts.get(index).toString();
     }
     return null;
@@ -67,7 +68,7 @@ public class TextBook implements TextBookInterface {
 
     File file = new File(POST_LIST_FILENAME);
     try (FileWriter fw = new FileWriter(file)) {
-      fw.write("\n" + lastID);
+      fw.write(lastID + "\n");
       return true;
     }
     catch (FileNotFoundException e) {
@@ -82,12 +83,15 @@ public class TextBook implements TextBookInterface {
 
   @Override
   public Post removePost(int index) {
+    if (index < 0 || index >= getPostCount()) {
+      return null;
+    }
     Post post = posts.remove(index);
     File file = new File(POST_LIST_FILENAME);
     if (post == null) {
       try (FileWriter fw = new FileWriter(file)) {
         for (Post p : posts) {
-          fw.write("\n" + p.getPostID());
+          fw.write(p.getPostID() + "\n");
         }
       }
       catch (FileNotFoundException e) {
@@ -102,18 +106,31 @@ public class TextBook implements TextBookInterface {
 
   @Override
   public boolean addComment(int postIndex, String author, String text) {
-    if (postIndex >= 0 && postIndex > posts.size() - 1) {
-      return false;
+    if (postIndex >= 0 && postIndex < posts.size()) {
+      Post post = posts.get(postIndex);
+      post.addComment(author, text);
+      return true;
     }
-    Post post = posts.get(postIndex);
-    post.addComment(author, text);
-    return true;
+    return false;
   }
 
   @Override
   public ArrayList<Post> getPosts() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getPosts'");
+    ArrayList<Post> postsCopy = new ArrayList<Post>();
+    for (Post post : posts) {
+      postsCopy.add(post);
+    }
+    return postsCopy;
+  }
+
+  @Override
+  public String toString() {
+    String toReturn = "TextBook contains " + getPostCount() + " posts:\n";
+    for (Post post : posts) {
+      toReturn += posts.indexOf(post) + " - " + post.toStringPostOnly();
+    }
+    System.out.println(toReturn);
+    return toReturn;
   }
   
 }

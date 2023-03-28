@@ -100,7 +100,6 @@ public class Post implements PostInterface {
       while (fileScanner.hasNext()) {
         toReturn += fileScanner.nextLine() + "\n";
       }
-      System.out.println(toReturn);
       return toReturn;
     } catch (Exception e) {
       System.out.println(e.getMessage() != null ? e.getMessage() : "Error reading file: " + fileName);
@@ -110,7 +109,7 @@ public class Post implements PostInterface {
 
   @Override
   public String toStringPostOnly() {
-    return df.format(this.postID) + " " + this.timestamp + " " + this.author + " " + this.text;
+    return df.format(this.postID) + " " + this.timestamp + " " + this.author + " " + this.text + "\n";
   }
 
   @Override
