@@ -31,7 +31,10 @@ public class Post implements PostInterface {
 
     File postFile = new File("Post-" + df.format(postID) + ".txt");
     try {
-      if (!postFile.exists() && postFile.createNewFile()) {
+      if (postFile.exists()) {
+        postFile.delete();
+      }
+      if (postFile.createNewFile()) {
         FileWriter fileWriter = new FileWriter(postFile);
         String toWrite = df.format(postID) + " " + timestamp.toString() + " " + this.author + " " + this.text;
         fileWriter.write(toWrite);
