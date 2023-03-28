@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class TaskMaster {
 
   public static void main(String[] args) {
@@ -16,7 +18,14 @@ public class TaskMaster {
     todos.addTask(task3);
     todos.addTask("Take a nap");
     System.out.println(todos.toString());
-
+    File file = new File("test1.csv");
+    todos.saveOut(file);
+    File newFile = new File("test2.csv");
+    ToDoList todos2 = new ToDoList(newFile);
     System.out.println(todos.getWork() != null ? todos.getWork().toString() : "No work");
+    System.out.println();
+    System.out.println(todos2.toString());
+    todos2.addTask(task2);
+    todos2.saveOut(newFile);
   }
 }
