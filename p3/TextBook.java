@@ -49,7 +49,7 @@ public class TextBook implements TextBookInterface {
 
   @Override
   public String getPostString(int index) {
-    if (index <= posts.size() - 1) {
+    if (index >= 0 && index <= posts.size() - 1) {
       return posts.get(index).toString();
     }
     return null;
@@ -102,8 +102,12 @@ public class TextBook implements TextBookInterface {
 
   @Override
   public boolean addComment(int postIndex, String author, String text) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'addComment'");
+    if (postIndex >= 0 && postIndex > posts.size() - 1) {
+      return false;
+    }
+    Post post = posts.get(postIndex);
+    post.addComment(author, text);
+    return true;
   }
 
   @Override
