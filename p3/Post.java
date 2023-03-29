@@ -55,13 +55,14 @@ public class Post implements PostInterface {
     File file = new File("Post-" + df.format(id) + ".txt");
     try (Scanner fileScanner = new Scanner(file)) {
       if (!fileScanner.hasNext())
-        System.out.println("File empty: " + file.getName());
-
+      System.out.println("File empty: " + file.getName());
+      
       // read initial values
       this.postID = Integer.parseInt(fileScanner.next());
       this.timestamp = Instant.parse(fileScanner.next());
       this.author = fileScanner.next();
       this.text = fileScanner.next() + fileScanner.nextLine();
+      this.comments = new ArrayList<String>();
 
       // read all comments
       while (fileScanner.hasNext()) {

@@ -16,6 +16,8 @@ public class TextBook implements TextBookInterface {
     DecimalFormat df = new DecimalFormat("00000");
 
     File postsFile = new File(POST_LIST_FILENAME);
+    if (!postsFile.exists())
+      return;
     try (Scanner fileScanner = new Scanner(postsFile)) {
       while (fileScanner.hasNextLine()) {
         int id = Integer.parseInt(fileScanner.nextLine());
