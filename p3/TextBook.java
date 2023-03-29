@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,11 +13,13 @@ public class TextBook implements TextBookInterface {
     posts = new ArrayList<Post>();
     lastID = 0;
 
+    DecimalFormat df = new DecimalFormat("00000");
+
     File postsFile = new File(POST_LIST_FILENAME);
     try (Scanner fileScanner = new Scanner(postsFile)) {
       while (fileScanner.hasNextLine()) {
-        String id = fileScanner.nextLine();
-        File file = new File("Post-" + id + ".txt");
+        int id = Integer.parseInt(fileScanner.nextLine());
+        File file = new File("Post-" + df.format(id) + ".txt");
         try (Scanner reader = new Scanner(file)) {
           Post post = new Post(reader.nextInt());
           posts.add(post);
@@ -27,7 +28,7 @@ public class TextBook implements TextBookInterface {
         } catch (Exception e) {
           System.out.println(e.getMessage() != null ? e.getMessage() : "Error reading file: " + file.getName());
         }
-        lastID = Integer.parseInt(id);
+        lastID = id;
       }
     }
     catch (FileNotFoundException e) {
@@ -67,7 +68,7 @@ public class TextBook implements TextBookInterface {
     }
 
     File file = new File(POST_LIST_FILENAME);
-    try (FileWriter fw = new FileWriter(file)) {
+    try (FileWriter fw = new FileWriter(file, true)) {
       fw.write(lastID + "\n");
       return true;
     }
