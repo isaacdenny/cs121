@@ -33,10 +33,10 @@ public class TextBookDriver {
           addNewPost(tb, inputScanner, name);
           break;
         case "d":
-          deletePost(tb);
+          deletePost(tb, inputScanner, name);
           break;
         case "c":
-          commentOnPost(tb);
+          commentOnPost(tb, inputScanner, name);
           break;
         case "r":
           readPostWithComments(tb);
@@ -57,17 +57,32 @@ public class TextBookDriver {
 
   private static void readPostWithComments(TextBook tb) {}
 
-  private static void commentOnPost(TextBook tb) {}
+  private static void commentOnPost(TextBook tb, Scanner scanner, String name) {
+    System.out.println("Enter the index of the post to comment on: ");
+    int index = Integer.parseInt(scanner.nextLine());
 
-  private static void deletePost(TextBook tb) {}
+    while (index < 0 || index >= tb.getPostCount()) {
+      System.out.println("Error: Invalid index. Please try again: ");
+      index = Integer.parseInt(scanner.nextLine());
+    }
+    System.out.println("Enter your comment: ");
+    String text = scanner.nextLine();
+
+    tb.addComment(index, name, text);
+  }
+
+  private static void deletePost(TextBook tb, Scanner scanner, String name) {
+
+  }
 
   private static void addNewPost(TextBook tb, Scanner scanner, String name) {
-    System.out.println("Enter the text for your new post: ");
+    System.out.print("Enter the text for your new post: ");
     String text = scanner.nextLine();
     tb.addPost(name, text);
   }
 
   private static void printPosts(TextBook tb) {
+    System.out.println();
     System.out.println(tb.toString());
   }
 
