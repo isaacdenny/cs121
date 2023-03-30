@@ -132,7 +132,6 @@ public class TextBook implements TextBookInterface {
     for (Post post : posts) {
       toReturn += posts.indexOf(post) + " - " + post.toStringPostOnly();
     }
-    System.out.println(toReturn);
     return toReturn;
   }
   

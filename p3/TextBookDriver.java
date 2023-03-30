@@ -19,9 +19,7 @@ public class TextBookDriver {
     System.out.print("Enter your name to enter TextBook: ");
 
     name = inputScanner.nextLine();
-    System.out.println(
-      name + ", welcome to TextBook, the totally-text social media service!"
-    );
+    System.out.println("\n" + name + ", welcome to TextBook, the totally-text social media service!\n");
     printMenu();
     System.out.print("Select an option or M for menu: ");
     input = inputScanner.nextLine().toLowerCase();
@@ -29,19 +27,19 @@ public class TextBookDriver {
     while (!input.equals("q")) {
       switch (input) {
         case "p":
-          printPosts();
+          printPosts(tb);
           break;
         case "a":
-          addNewPost();
+          addNewPost(tb, inputScanner, name);
           break;
         case "d":
-          deletePost();
+          deletePost(tb);
           break;
         case "c":
-          commentOnPost();
+          commentOnPost(tb);
           break;
         case "r":
-          readPostWithComments();
+          readPostWithComments(tb);
           break;
         case "m":
           printMenu();
@@ -57,15 +55,21 @@ public class TextBookDriver {
     inputScanner.close();
   }
 
-  private static void readPostWithComments() {}
+  private static void readPostWithComments(TextBook tb) {}
 
-  private static void commentOnPost() {}
+  private static void commentOnPost(TextBook tb) {}
 
-  private static void deletePost() {}
+  private static void deletePost(TextBook tb) {}
 
-  private static void addNewPost() {}
+  private static void addNewPost(TextBook tb, Scanner scanner, String name) {
+    System.out.println("Enter the text for your new post: ");
+    String text = scanner.nextLine();
+    tb.addPost(name, text);
+  }
 
-private static void printPosts() {}
+  private static void printPosts(TextBook tb) {
+    System.out.println(tb.toString());
+  }
 
   private static void printMenu() {
     System.out.println("----------------------------------------");
