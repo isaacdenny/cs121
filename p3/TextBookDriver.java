@@ -39,7 +39,7 @@ public class TextBookDriver {
           commentOnPost(tb, inputScanner, name);
           break;
         case "r":
-          readPostWithComments(tb);
+          readPostWithComments(tb, inputScanner);
           break;
         case "m":
           printMenu();
@@ -55,17 +55,30 @@ public class TextBookDriver {
     inputScanner.close();
   }
 
-  private static void readPostWithComments(TextBook tb) {}
+  private static void readPostWithComments(TextBook tb, Scanner scanner) {
+    System.out.print("Enter the index of the post to read: ");
+    int index = Integer.parseInt(scanner.nextLine());
+
+    String toPrint = tb.getPostString(index);
+
+    while (toPrint == null) {
+      System.out.print("Error: Invalid index. Please try again: ");
+      index = Integer.parseInt(scanner.nextLine());
+      toPrint = tb.getPostString(index);
+    }
+    System.out.println();
+    System.out.println(toPrint);
+  }
 
   private static void commentOnPost(TextBook tb, Scanner scanner, String name) {
-    System.out.println("Enter the index of the post to comment on: ");
+    System.out.print("Enter the index of the post to comment on: ");
     int index = Integer.parseInt(scanner.nextLine());
 
     while (index < 0 || index >= tb.getPostCount()) {
-      System.out.println("Error: Invalid index. Please try again: ");
+      System.out.print("Error: Invalid index. Please try again: ");
       index = Integer.parseInt(scanner.nextLine());
     }
-    System.out.println("Enter your comment: ");
+    System.out.print("Enter your comment: ");
     String text = scanner.nextLine();
 
     tb.addComment(index, name, text);
