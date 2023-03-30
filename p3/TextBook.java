@@ -89,9 +89,17 @@ public class TextBook implements TextBookInterface {
     if (index < 0 || index >= getPostCount()) {
       return null;
     }
+
+    DecimalFormat df = new DecimalFormat("00000");
+    File postFile = new File("Post-" + df.format(index + 1) + ".txt");
+    if (postFile.exists()) {
+      postFile.delete();
+    }
+
     Post post = posts.remove(index);
     File file = new File(POST_LIST_FILENAME);
-    if (post == null) {
+
+    if (post != null) {
       try (FileWriter fw = new FileWriter(file)) {
         for (Post p : posts) {
           fw.write(p.getPostID() + "\n");

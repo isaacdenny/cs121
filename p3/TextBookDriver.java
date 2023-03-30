@@ -85,7 +85,14 @@ public class TextBookDriver {
   }
 
   private static void deletePost(TextBook tb, Scanner scanner, String name) {
-
+    System.out.print("Enter the index of the post to delete: ");
+    int index = Integer.parseInt(scanner.nextLine());
+    while (tb.removePost(index) == null) {
+      System.out.print("Error: Invalid index. Please try again: ");
+      index = Integer.parseInt(scanner.nextLine());
+    }
+    System.out.println();
+    System.out.println("Successfully deleted the post");
   }
 
   private static void addNewPost(TextBook tb, Scanner scanner, String name) {
