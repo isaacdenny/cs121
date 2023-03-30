@@ -1,7 +1,10 @@
 import java.util.Scanner;
 
 /**
- * Driver for the TextBook Social Media Application. Provides an interface for TextBook and Post functionality.
+ * Driver for the TextBook Social Media Application. Provides an interface 
+ * for TextBook and Post functionality.
+ * 
+ * @author Isaac Denny
  */
 public class TextBookDriver {
 

@@ -5,10 +5,19 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This is the TextBook class that handles all of the application's functionality on 
+ * the TextBook level, including handling posts and their associated save files.
+ * 
+ * @author Isaac Denny
+ */
 public class TextBook implements TextBookInterface {
   private ArrayList<Post> posts;
   private int lastID;
 
+  /**
+   * Constructs a new TextBook instance.
+   */
   public TextBook() {
     posts = new ArrayList<Post>();
     lastID = 0;

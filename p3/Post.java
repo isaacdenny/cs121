@@ -6,6 +6,12 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Utility class for the TextBook application. This class handles all the functionality on the 
+ * Post level, including the ability to create and read it's respective save file.
+ * 
+ * @author Isaac Denny
+ */
 public class Post implements PostInterface {
   private String author, text;
   private Instant timestamp;
