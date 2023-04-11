@@ -126,7 +126,7 @@ public class TicTacToeTester {
 		testX00O10X11O22X02O01();
 		testX00O10X11O22X02O01X21();
 		testX00O10X11O22X02O01X21O20();
-		testX00O10X11O22X02O01X21O20X12(); //tie game
+		testX00O10X11O22X02O01X21O20X12(); //tie game FAILED
 		testX02O10X00O22X01(); //X wins - first row
 		testX11O00X10O22X12(); //X wins - second row
 		testX22O00X20O12X21(); //X wins - third row
@@ -146,7 +146,7 @@ public class TicTacToeTester {
 		//last move (9th move) is a winning move
 		testX01O12X00O02X10O20X11O21X22(); //X wins
 		testO01X12O00X02O10X20O11X21O22(); //O wins
-		//reset game
+		// //reset game
 		testX00O10X11NewGame(); //new game after partial game
 		testX01O12X00O02X10O20X11O21X22NewGame(); //new game after X win
 		testO01X12O00X02O10X20O11X21O22NewGame(); //new game after O win
