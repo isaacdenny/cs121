@@ -20,8 +20,8 @@ public class QuickDraw {
     Card player1Card = deck.draw();
     Card player2Card = deck.draw();
     
-    System.out.println(player1Name = " drew " + player1Card.toString());
-    System.out.println(player2Name = " drew " + player2Card.toString());
+    System.out.println(player1Name + " drew " + player1Card.toString());
+    System.out.println(player2Name + " drew " + player2Card.toString());
 
     if (player1Card.compareTo(player2Card) > 0) {
       System.out.println(player1Name + " Wins!");
