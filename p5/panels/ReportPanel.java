@@ -1,17 +1,21 @@
 package panels;
-import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ReportPanel extends JPanel {
+public class ReportPanel extends JPanel implements ActionListener {
   private JLabel livesLabel;
   private JTextField livesField;
   
+  public ReportPanel() {
+  }
+
   @Override
-  protected void paintComponent(Graphics g) {
+  public void actionPerformed(ActionEvent e) {
     // TODO Auto-generated method stub
-    super.paintComponent(g);
+    throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
   }
 }

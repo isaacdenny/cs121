@@ -17,12 +17,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class MineWalkerPanel extends JPanel {
-  private ActionListener actionListener;
+public class MineWalkerPanel extends JPanel{
   private JPanel controlsPanel, gridPanel, colorKeyPanel, reportPanel;
   private GridBagConstraints layoutConstraints;
 
-  public MineWalkerPanel() {;
+  public MineWalkerPanel() {
     controlsPanel = new ControlsPanel();
     gridPanel = new GridPanel();
     colorKeyPanel = new ColorKeyPanel();
@@ -39,4 +38,6 @@ public class MineWalkerPanel extends JPanel {
     this.add(colorKeyPanel, layoutConstraints);
     this.add(reportPanel, layoutConstraints);
   }
+  
+
 }
