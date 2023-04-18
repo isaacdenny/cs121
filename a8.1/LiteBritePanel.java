@@ -29,8 +29,8 @@ public class LiteBritePanel extends JPanel {
 		 * Completely remove this comment and code once LitePegButton is working
 		 * and you are ready to enable the Phase 2 code.
 		 */
-		LitePegButton testButton = new LitePegButton();
-		this.add(testButton);
+		// LitePegButton testButton = new LitePegButton();
+		// this.add(testButton);
 		
 		/*
 		 * Phase 2: Enable the following to add a subpanel containing a grid of
@@ -38,8 +38,8 @@ public class LiteBritePanel extends JPanel {
 		 * final version of LiteBrite. Enable the call to board.reset() in
 		 * ResetButtonListener at the same time you enable this option.
 		 */
-		//board = new LiteBriteBoardPanel(BOARD_DIMENSION, BOARD_DIMENSION);
-		//this.add(board);
+		board = new LiteBriteBoardPanel(BOARD_DIMENSION, BOARD_DIMENSION);
+		this.add(board);
 		
 		JButton resetButton = new JButton("Reset");
 		resetButton.setFont (new Font("Arial", Font.PLAIN, 24));
@@ -55,7 +55,7 @@ public class LiteBritePanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//board.reset();
+			board.reset();
 		}
 	}
 }
