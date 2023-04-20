@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,17 +20,43 @@ import javax.swing.JTextField;
  */
 public class MineWalkerPanel extends JPanel {
 
-  private JPanel controlsPanel, gridPanel, colorKeyPanel, reportPanel;
+  private final Color[] COLOR_KEY_COLORS = {
+    Color.green,
+    Color.yellow,
+    Color.orange,
+    Color.red,
+    Color.gray,
+    Color.black,
+  };
+  private final String[] COLOR_KEY_NAMES = {
+    "0 mine neighbors",
+    "1 mine neighbor",
+    "2 mine neighbors",
+    "3 mine neighbors",
+    "hidden tile",
+    "exposed mine",
+  };
+
   private final int DEFAULT_MINE_PERCENTAGE = 50;
+  private final int GRID_DIMENSION = 10;
+  private final int STARTING_LIVES = 5;
+
   private int minePercentage;
-  private int lives;
+  private int lives; //
+
+  private Random rand = new Random();
+  
+  private TileButton[][] tiles;
+  private JLabel minePercentLabel;
+  private JTextField minePercentField;
+  private JLabel livesLabel;
   private TileButton playerButton;
 
   public MineWalkerPanel() {
-    controlsPanel = new ControlsPanel(500, 100);
-    gridPanel = new GridPanel(500, 400);
-    colorKeyPanel = new ColorKeyPanel(200, 400);
-    reportPanel = new ReportPanel(500, 100);
+    JPanel controlsPanel = new ControlsPanel();
+    JPanel gridPanel = new GridPanel();
+    JPanel colorKeyPanel = new ColorKeyPanel();
+    JPanel reportPanel = new ReportPanel();
 
     this.setLayout(new BorderLayout());
 
@@ -41,24 +66,31 @@ public class MineWalkerPanel extends JPanel {
     this.add(reportPanel, BorderLayout.SOUTH);
   }
 
+  private void setPlayer(TileButton button) {
+    if (playerButton != null) {
+      playerButton.setText("");
+    }
+    playerButton = button;
+    playerButton.setText("X");
+    playerButton.setBackground(
+      COLOR_KEY_COLORS[playerButton.getNumMineNeighbors()]
+      );
+    playerButton.setHidden(false);
+  }
   /**
    * Grid Panel for the MineWalker Application
    * @author Isaac Denny
    */
   private class GridPanel extends JPanel {
-    private Random rand = new Random();
-    private final int GRID_DIMENSION = 10;
-    private TileButton[][] tiles;
-
-    public GridPanel(int width, int height) {
-      setPreferredSize(new Dimension(width, height));
+    public GridPanel() {
 
       setUpGrid();
       ArrayList<Point> path = generatePath();
       placeMines(path);
-
       findNeighbors();
+      setPlayer(tiles[0][0]);
     }
+
 
     private void findNeighbors() {
       for (int i = 0; i < tiles.length; i++) {
@@ -86,10 +118,11 @@ public class MineWalkerPanel extends JPanel {
       // Place mines
       int numMinesToPlace = (int) (Math.pow(GRID_DIMENSION, 2) - path.size()) *
       minePercentage /
-          100;
-      
+      100;
+
       while (numMinesToPlace > 0) {
-        TileButton tile = tiles[rand.nextInt(tiles.length)][rand.nextInt(tiles[0].length)];
+        TileButton tile =
+          tiles[rand.nextInt(tiles.length)][rand.nextInt(tiles[0].length)];
         if (tile.isMine() || tile.isPath()) {
           continue;
         }
@@ -111,35 +144,24 @@ public class MineWalkerPanel extends JPanel {
     private void setUpGrid() {
       tiles = new TileButton[GRID_DIMENSION][GRID_DIMENSION];
       GridLayout gridLayout = new GridLayout(10, 10);
+      this.setLayout(gridLayout);
 
       // Set up grid
       for (int i = 0; i < tiles.length; i++) {
         for (int j = 0; j < tiles[i].length; j++) {
           TileButton button = new TileButton(i, j);
           button.setEnabled(true);
-          button.setVisible(false);
           button.setPath(false);
           button.setMine(false);
           button.setNumMineNeighbors(0);
           button.setText("");
-          button.setBackground(Color.gray);
-          button.addActionListener(new GridActionListener());
+          button.setBackground(COLOR_KEY_COLORS[4]);
+          button.setHidden(true);
+          button.addActionListener(new TileButtonActionListener());
 
           tiles[i][j] = button;
           this.add(button);
         }
-      }
-      this.setLayout(gridLayout);
-    }
-
-    private class GridActionListener implements ActionListener {
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-          "Unimplemented method 'actionPerformed'"
-        );
       }
     }
   }
@@ -150,40 +172,19 @@ public class MineWalkerPanel extends JPanel {
    */
   public class ControlsPanel extends JPanel {
 
-    private JLabel minePercentLabel;
-    private JTextField minePercentField;
-    private JButton newGameButton;
-
-    public ControlsPanel(int width, int height) {
+    public ControlsPanel() {
       minePercentage = DEFAULT_MINE_PERCENTAGE;
-      setPreferredSize(new Dimension(width, height));
 
-      newGameButton = new JButton("New Game");
-      minePercentLabel = new JLabel("Percent:");
-      minePercentField = new JTextField("50");
+      JButton newGameButton = new JButton("New Game");
+      minePercentLabel = new JLabel("Mine Percent:");
+      minePercentField = new JTextField("" + minePercentage);
 
       minePercentField.setEditable(true);
-      minePercentField.addActionListener(new ControlPanelListener());
+      newGameButton.addActionListener(new NewGameListener());
 
       this.add(newGameButton);
       this.add(minePercentLabel);
       this.add(minePercentField);
-    }
-
-    private class ControlPanelListener implements ActionListener {
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        minePercentage = Integer.parseInt(minePercentField.getText());
-      }
-    }
-
-    /**
-     * Gets the minePercentage attribute of this component
-     * @return int the mine percentage
-     */
-    public int getMinePercentage() {
-      return minePercentage;
     }
   }
 
@@ -193,31 +194,14 @@ public class MineWalkerPanel extends JPanel {
    */
   public class ColorKeyPanel extends JPanel {
 
-    private final Color[] colorKeyColors = {
-      Color.gray,
-      Color.black,
-      Color.green,
-      Color.yellow,
-      Color.orange,
-      Color.red,
-    };
-    private final String[] colorKeyNames = {
-      "hidden tile",
-      "exposed mine",
-      "0 mine neighbors",
-      "1 mine neighbor",
-      "2 mine neighbors",
-      "3 mine neighbors",
-    };
-
-    public ColorKeyPanel(int width, int height) {
+    public ColorKeyPanel() {
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-      setPreferredSize(new Dimension(width, height));
 
-      for (int i = 0; i < colorKeyColors.length; i++) {
-        JTextArea text = new JTextArea(colorKeyNames[i]);
-        text.setBackground(colorKeyColors[i]);
+      for (int i = 0; i < COLOR_KEY_COLORS.length; i++) {
+        JTextField text = new JTextField(COLOR_KEY_NAMES[i]);
+        text.setBackground(COLOR_KEY_COLORS[i]);
         text.setForeground(Color.WHITE);
+        text.setEditable(false);
         add(text);
       }
     }
@@ -228,12 +212,54 @@ public class MineWalkerPanel extends JPanel {
    * @author Isaac Denny
    */
   public class ReportPanel extends JPanel {
+    public ReportPanel() {
+      lives = STARTING_LIVES;
+      livesLabel = new JLabel("Lives: " + lives);
+      this.add(livesLabel);
+    }
+  }
 
-    private JLabel livesLabel;
-    private JTextField livesField;
+  private class TileButtonActionListener implements ActionListener {
 
-    public ReportPanel(int width, int height) {
-      setPreferredSize(new Dimension(width, height));
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      TileButton buttonClicked = (TileButton) e.getSource();
+      Point buttonLoc = buttonClicked.getLocation();
+      Point playerLoc = playerButton.getLocation();
+      int xDist = Math.abs(playerLoc.x - buttonLoc.x);
+      int yDist = Math.abs(playerLoc.y - buttonLoc.y);
+
+      if (xDist > 1 || yDist > 1) {
+        return;
+      }
+      else if (xDist == 1 && yDist == 1 || xDist == 1 && yDist == 1) {
+        return;
+      }
+
+      if (buttonClicked.isMine()) {
+        buttonClicked.setHidden(false);
+        buttonClicked.setBackground(COLOR_KEY_COLORS[5]); // exposed mine
+        buttonClicked.setEnabled(false);
+        lives--;
+      }
+      else if (!buttonClicked.isHidden()) {
+        playerButton.setText("");
+        buttonClicked.setText("X");
+        playerButton = buttonClicked;
+      }
+      else {
+        setPlayer(buttonClicked);
+      }
+      System.out.println(playerLoc.y - buttonLoc.y);
+    }
+  }
+
+  private class NewGameListener implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      minePercentage = Integer.parseInt(minePercentField.getText());
+      
     }
   }
 }
